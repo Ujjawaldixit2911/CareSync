@@ -32,9 +32,14 @@ const App = () => {
   const queryClient = useQueryClient()
   const { token, userData } = useContext(AppContext)
 
+  // Synchronize Dark / Light Theme on document root with eye-care smooth transition
   useEffect(() => {
-    document.documentElement.classList.remove('dark')
-  }, [])
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
+  }, [theme])
 
   // Real-time WebSocket connection
   useEffect(() => {
