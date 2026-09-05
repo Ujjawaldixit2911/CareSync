@@ -3,10 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const getInitialTheme = () => {
   const saved = localStorage.getItem('theme');
   if (saved) return saved;
-  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    return 'dark';
-  }
-  return 'light';
+  return 'light'; // Default to Day (Light) theme
 };
 
 const initialState = {
