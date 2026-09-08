@@ -4,7 +4,7 @@
 
 ## 🚀 Live Demo
 
-- 🌐 **Live Website (Frontend)**: [https://caresync-frontend.onrender.com](https://caresync-frontend.onrender.com)
+- 🌐 **Live Website**: [https://caresync-frontend-otci.onrender.com/](https://caresync-frontend-otci.onrender.com/)
 
 ## 🛠️ Tech Stack
 
