@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { ArrowRight, Star, ShieldCheck, Calendar, Clock, Stethoscope, Sparkles } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { AppContext } from '../context/AppContext'
-import { doctors as staticDoctors, specialityData } from '../assets/assets'
+import { doctors as staticDoctors, specialityData, getDoctorInstantImage } from '../assets/assets'
 
 const DoctorLeadershipGrid = () => {
   const navigate = useNavigate()
@@ -92,8 +92,10 @@ const DoctorLeadershipGrid = () => {
                 {/* Doctor Photo Container */}
                 <div className="relative mb-4 rounded-2xl overflow-hidden bg-gradient-to-tr from-blue-500/10 via-zinc-100 dark:via-[#1f1f23] to-teal-500/10 aspect-square flex items-center justify-center p-2 border border-zinc-200/60 dark:border-[#3f3f46]">
                   <img
-                    src={doc.image}
+                    src={getDoctorInstantImage(doc, idx)}
                     alt={doc.name}
+                    loading="eager"
+                    decoding="async"
                     className="w-full h-full object-cover object-top rounded-xl group-hover:scale-105 transition-transform duration-500"
                   />
                   

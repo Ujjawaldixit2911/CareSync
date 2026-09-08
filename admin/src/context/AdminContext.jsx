@@ -16,7 +16,7 @@ const AdminContextProvider = (props) => {
     }
 
     const [aToken, setAToken] = useState(urlAToken || localStorage.getItem('aToken') || '')
-    const backendUrl = (import.meta.env.VITE_BACKEND_URL || 'http://localhost:8080').replace(/\/$/, '')
+    const backendUrl = import.meta.env.VITE_BACKEND_URL
     const [appointments, setAppointments] = useState([])
 
     const [doctors, setDoctors] = useState([])

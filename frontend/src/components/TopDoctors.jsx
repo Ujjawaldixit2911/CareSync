@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { AppContext } from '../context/AppContext'
 import { ArrowRight, UserCheck, Star } from 'lucide-react'
-import { doctors as staticDoctors } from '../assets/assets'
+import { doctors as staticDoctors, getDoctorInstantImage } from '../assets/assets'
 
 const TopDoctors = () => {
   const navigate = useNavigate()
@@ -17,11 +17,20 @@ const TopDoctors = () => {
       try {
         const { data } = await axios.get(`${backendUrl}/api/doctor/list`)
         if (data.success && data.doctors && data.doctors.length > 0) {
-          return data.doctors
+          return data.doctors.map((d, i) => ({
+            ...d,
+            image: getDoctorInstantImage(d, i)
+          }))
         }
-        return staticDoctors
+        return staticDoctors.map((d, i) => ({
+          ...d,
+          image: getDoctorInstantImage(d, i)
+        }))
       } catch (err) {
-        return staticDoctors
+        return staticDoctors.map((d, i) => ({
+          ...d,
+          image: getDoctorInstantImage(d, i)
+        }))
       }
     },
   })

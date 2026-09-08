@@ -4,6 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import { AppContext } from '../context/AppContext'
+import { getDoctorInstantImage } from '../assets/assets'
 import { 
   Calendar, 
   MapPin, 
@@ -305,8 +306,10 @@ const MyAppointments = () => {
               <div className="flex gap-4 items-start w-full md:w-auto">
                 <img 
                   className="w-20 h-20 rounded-xl object-cover border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 flex-shrink-0" 
-                  src={item.docData?.image || '/fallback-doctor.png'} 
+                  src={getDoctorInstantImage(item.docData)} 
                   alt={item.docData?.name || 'Doctor'} 
+                  loading="eager"
+                  decoding="async"
                 />
                 <div className="space-y-1.5 text-xs text-zinc-550 dark:text-zinc-400">
                   <div className="flex flex-wrap items-center gap-2">

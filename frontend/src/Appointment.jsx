@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { AppContext } from './context/AppContext'
-import { assets, doctors as staticDoctors } from './assets/assets'
+import { assets, doctors as staticDoctors, getDoctorInstantImage } from './assets/assets'
 import RelatedDoctors from './components/RelatedDoctors'
 import axios from 'axios'
 import { toast } from 'react-toastify'
@@ -29,6 +29,7 @@ const Appointment = () => {
     if (doc) {
       setDocInfo({ 
         ...doc, 
+        image: getDoctorInstantImage(doc),
         available: doc.available !== false,
         availableFrom: doc.availableFrom || '09:00 AM',
         availableTo: doc.availableTo || '08:00 PM',

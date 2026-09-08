@@ -2,6 +2,7 @@ import React, { useContext, useState, useRef, useEffect } from 'react'
 import { AppContext } from '../context/AppContext'
 import axios from 'axios'
 import { toast } from 'react-toastify'
+import { playHumanVoice, stopHumanVoice } from '../utils/humanVoice'
 import { 
   Bot, 
   Sparkles, 
@@ -108,20 +109,10 @@ const AiHub = () => {
     chatBottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [chatHistory, isChatLoading])
 
-  // Initialize Text-to-Speech (Hindi & English Bilingual Auto-Switching)
+  // Humanized Text-to-Speech Engine
   const speakText = (text) => {
-    if (!isVoiceEnabled || !('speechSynthesis' in window)) return
-    try {
-      window.speechSynthesis.cancel()
-      const cleanText = text.replace(/[*_#`[\]]/g, '').slice(0, 350)
-      const utterance = new SpeechSynthesisUtterance(cleanText)
-      utterance.rate = 1.0
-      utterance.pitch = 1.0
-      utterance.lang = isHindiInput(cleanText) ? 'hi-IN' : 'en-IN'
-      window.speechSynthesis.speak(utterance)
-    } catch (err) {
-      console.warn(err)
-    }
+    if (!isVoiceEnabled) return
+    playHumanVoice(text)
   }
 
   const silenceTimerRef = useRef(null)
@@ -412,7 +403,7 @@ const AiHub = () => {
             onClick={() => {
               const newVoice = !isVoiceEnabled
               setIsVoiceEnabled(newVoice)
-              if (!newVoice && 'speechSynthesis' in window) window.speechSynthesis.cancel()
+              if (!newVoice) stopHumanVoice()
               toast.info(newVoice ? '🔊 Voice narration enabled' : '🔇 Voice narration muted')
             }}
             className={`px-3 py-1.5 rounded-xl border text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-colors ${

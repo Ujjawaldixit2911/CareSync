@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { AdminContext } from '../../context/AdminContext'
 import { AppContext } from '../../context/AppContext'
+import { getDoctorInstantImage } from '../../assets/assets'
 import { 
   Calendar, 
   Clock, 
@@ -182,7 +183,9 @@ const AllAppointments = () => {
                   {/* Doctor Info */}
                   <div className='flex items-center gap-3 pr-2'>
                     <img 
-                      src={item.docData?.image} 
+                      src={getDoctorInstantImage(item.docData)} 
+                      loading='eager'
+                      decoding='async'
                       className='w-9 h-9 rounded-full object-cover border border-zinc-200 dark:border-zinc-700 bg-zinc-100 shrink-0' 
                       alt="" 
                     />
@@ -292,7 +295,9 @@ const AllAppointments = () => {
                   <div className='flex items-center justify-between'>
                     <div className='flex items-center gap-2'>
                       <img
-                        src={item.docData?.image}
+                        src={getDoctorInstantImage(item.docData)}
+                        loading='eager'
+                        decoding='async'
                         className='w-6 h-6 rounded-full object-cover border border-zinc-200 dark:border-zinc-700'
                         alt=''
                       />

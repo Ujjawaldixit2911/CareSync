@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AdminContext } from '../../context/AdminContext'
+import { getDoctorInstantImage } from '../../assets/assets'
 import { Search, Filter, Stethoscope, CheckCircle2, XCircle, Trash2, UserCheck, ShieldCheck, DollarSign } from 'lucide-react'
 
 const DoctorsList = () => {
@@ -109,7 +110,7 @@ const DoctorsList = () => {
               <div className='relative bg-zinc-50 dark:bg-zinc-950/60 aspect-[4/3] overflow-hidden'>
                 <img
                   className='w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500'
-                  src={item.image}
+                  src={getDoctorInstantImage(item, index)}
                   alt={item.name}
                   loading='eager'
                   decoding='async'

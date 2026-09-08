@@ -92,16 +92,35 @@ export const doctorImagesByFile = {
     'doc13.png': doc13,
     'doc14.png': doc14,
     'doc15.png': doc15,
+};
+
+// Preload all instant doctor assets into browser memory for 0ms render
+if (typeof window !== 'undefined') {
+    [doc1, doc2, doc3, doc4, doc5, doc6, doc7, doc8, doc9, doc10, doc11, doc12, doc13, doc14, doc15].forEach(src => {
+        const img = new Image();
+        img.src = src;
+    });
 }
 
 export const getDoctorInstantImage = (doctor, index = 0) => {
     if (!doctor) return doc1;
     if (doctor.email && doctorImages[doctor.email]) return doctorImages[doctor.email];
     if (doctor.name && doctorImagesByName[doctor.name]) return doctorImagesByName[doctor.name];
-    if (doctor.image) {
+    if (typeof doctor.image === 'string' && doctor.image.length > 0) {
+        // Fast match local file name
         const file = doctor.image.split('/').pop()?.split('?')[0];
         if (file && doctorImagesByFile[file]) return doctorImagesByFile[file];
-        if (doctor.image.startsWith('http') || doctor.image.startsWith('data:')) return doctor.image;
+
+        // Regex match doc1-doc15 anywhere in the path or URL
+        const match = doctor.image.match(/doc(1[0-5]|[1-9])(?:\.|\b|_)/i);
+        if (match) {
+            const fileName = `doc${match[1]}.png`;
+            if (doctorImagesByFile[fileName]) return doctorImagesByFile[fileName];
+        }
+
+        // Base64 or direct data URI
+        if (doctor.image.startsWith('data:')) return doctor.image;
+        if (doctor.image.startsWith('http')) return doctor.image;
     }
     const fallbackList = [doc1, doc2, doc3, doc4, doc5, doc6, doc7, doc8, doc9, doc10, doc11, doc12, doc13, doc14, doc15];
     return fallbackList[index % fallbackList.length];

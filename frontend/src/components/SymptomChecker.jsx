@@ -26,6 +26,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
 import { toast } from 'react-toastify';
+import { playHumanVoice, stopHumanVoice } from '../utils/humanVoice';
 
 // Helper to check if text is Hindi / Hinglish vs English
 const isHindiInput = (text) => {
@@ -309,21 +310,10 @@ const SymptomChecker = () => {
   const navigate = useNavigate();
   const { token, backendUrl } = useContext(AppContext);
 
-  // Initialize Speech Synthesis with smart Hindi / English voice matching
+  // Humanized Speech Synthesis with natural acoustic tuning
   const speakText = (text) => {
-    if (!isVoiceEnabled || !('speechSynthesis' in window)) return;
-    try {
-      window.speechSynthesis.cancel(); // Stop ongoing speech
-      const cleanText = text.replace(/[*_#`[\]]/g, '').slice(0, 350);
-      const utterance = new SpeechSynthesisUtterance(cleanText);
-      utterance.rate = 1.0;
-      utterance.pitch = 1.0;
-      // Auto-detect Hindi vs English language for voice pitch
-      utterance.lang = isHindiInput(cleanText) ? 'hi-IN' : 'en-IN';
-      window.speechSynthesis.speak(utterance);
-    } catch (err) {
-      console.warn('Speech synthesis warning:', err);
-    }
+    if (!isVoiceEnabled) return;
+    playHumanVoice(text);
   };
 
   // Helper to send query and auto-reply
@@ -577,7 +567,7 @@ const SymptomChecker = () => {
                   onClick={() => {
                     const newVoice = !isVoiceEnabled;
                     setIsVoiceEnabled(newVoice);
-                    if (!newVoice && 'speechSynthesis' in window) window.speechSynthesis.cancel();
+                    if (!newVoice) stopHumanVoice();
                     toast.info(newVoice ? '🔊 Voice output enabled' : '🔇 Voice output muted');
                   }}
                   className={`p-2 rounded-xl transition-colors cursor-pointer ${
@@ -590,7 +580,7 @@ const SymptomChecker = () => {
 
                 <button
                   onClick={() => {
-                    if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+                    stopHumanVoice();
                     setIsOpen(false);
                   }}
                   className="p-2 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 transition-colors cursor-pointer"

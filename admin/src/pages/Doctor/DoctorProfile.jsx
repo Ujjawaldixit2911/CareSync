@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { DoctorContext } from '../../context/DoctorContext'
 import { AppContext } from '../../context/AppContext'
+import { getDoctorInstantImage } from '../../assets/assets'
 import { toast } from 'react-toastify'
 import axios from 'axios'
 import { 
@@ -180,8 +181,10 @@ const DoctorProfile = () => {
           <div className='space-y-4 text-center'>
             <div className='relative w-32 h-32 mx-auto rounded-2xl overflow-hidden border-2 border-primary/20 shadow-sm'>
               <img
-                src={profileData.image}
+                src={getDoctorInstantImage(profileData)}
                 alt={profileData.name}
+                loading='eager'
+                decoding='async'
                 className='w-full h-full object-cover object-top'
               />
               <div className='absolute bottom-1 right-1'>
