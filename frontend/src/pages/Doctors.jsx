@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { AppContext } from '../context/AppContext'
 import { Search, Filter, Sparkles, ChevronLeft, ChevronRight, UserPlus } from 'lucide-react'
-import { doctors as staticDoctors } from '../assets/assets'
+import { doctors as staticDoctors, getDoctorInstantImage } from '../assets/assets'
 
 const Doctors = () => {
   const { speciality } = useParams()
@@ -23,7 +23,10 @@ const Doctors = () => {
       try {
         const { data } = await axios.get(`${backendUrl}/api/doctor/list`)
         if (data.success && data.doctors && data.doctors.length > 0) {
-          return data.doctors
+          return data.doctors.map((d, i) => ({
+            ...d,
+            image: getDoctorInstantImage(d, i)
+          }))
         }
         return staticDoctors
       } catch (err) {
@@ -166,6 +169,8 @@ const Doctors = () => {
                         className='w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105'
                         src={item.image}
                         alt={item.name}
+                        loading="eager"
+                        decoding="async"
                       />
                       <div className="absolute top-2.5 left-2.5">
                         <span className={`inline-flex items-center gap-1 text-[9px] font-semibold px-2 py-0.5 rounded-full border shadow-sm backdrop-blur-md ${

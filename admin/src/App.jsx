@@ -41,18 +41,20 @@ const App = () => {
   // Admin layout and routes
   if (aToken) {
     return (
-      <div className='bg-zinc-50/60 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 min-h-screen transition-colors duration-300'>
+      <div className='bg-zinc-50/60 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 min-h-screen transition-colors duration-300 flex flex-col'>
         <ToastContainer theme={theme === 'dark' ? 'dark' : 'light'} />
         <Navbar />
-        <div className='flex items-start w-full'>
+        <div className='flex items-start w-full flex-1'>
           <Sidebar />
-          <Routes>
-            <Route path="/admin-dashboard" element={<Dashboard />} />
-            <Route path="/all-appointments" element={<AllAppointments />} />
-            <Route path="/add-doctor" element={<AddDoctor />} />
-            <Route path="/doctor-list" element={<DoctorsList />} />
-            <Route path="*" element={<Navigate to="/admin-dashboard" />} />
-          </Routes>
+          <div className='flex-1 min-w-0 w-full overflow-x-hidden'>
+            <Routes>
+              <Route path="/admin-dashboard" element={<Dashboard />} />
+              <Route path="/all-appointments" element={<AllAppointments />} />
+              <Route path="/add-doctor" element={<AddDoctor />} />
+              <Route path="/doctor-list" element={<DoctorsList />} />
+              <Route path="*" element={<Navigate to="/admin-dashboard" />} />
+            </Routes>
+          </div>
         </div>
       </div>
     )
@@ -61,17 +63,19 @@ const App = () => {
   // Doctor layout and routes
   if (dToken) {
     return (
-      <div className='bg-zinc-50/60 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 min-h-screen transition-colors duration-300'>
+      <div className='bg-zinc-50/60 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 min-h-screen transition-colors duration-300 flex flex-col'>
         <ToastContainer theme={theme === 'dark' ? 'dark' : 'light'} />
         <Navbar />
-        <div className='flex items-start w-full'>
+        <div className='flex items-start w-full flex-1'>
           <Sidebar />
-          <Routes>
-            <Route path="/doctor-dashboard" element={<DoctorDashboard />} />
-            <Route path="/doctor-appointments" element={<DoctorAppointments />} />
-            <Route path="/doctor-profile" element={<DoctorProfile />} />
-            <Route path="*" element={<Navigate to="/doctor-dashboard" />} />
-          </Routes>
+          <div className='flex-1 min-w-0 w-full overflow-x-hidden'>
+            <Routes>
+              <Route path="/doctor-dashboard" element={<DoctorDashboard />} />
+              <Route path="/doctor-appointments" element={<DoctorAppointments />} />
+              <Route path="/doctor-profile" element={<DoctorProfile />} />
+              <Route path="*" element={<Navigate to="/doctor-dashboard" />} />
+            </Routes>
+          </div>
         </div>
       </div>
     )

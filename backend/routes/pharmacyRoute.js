@@ -1,7 +1,6 @@
 import express from 'express'
 import { addMedicine, listMedicines, updateMedicineStock, createPharmacyOrder, listPharmacyOrders, updateOrderStatus } from '../controllers/pharmacyController.js'
 import authAdmin from '../middlewares/authAdmin.js'
-import authUser from '../middlewares/authUser.js'
 
 const pharmacyRouter = express.Router()
 
@@ -13,6 +12,6 @@ pharmacyRouter.post('/update-order-status', authAdmin, updateOrderStatus)
 
 // Patient/Doctor catalog operations
 pharmacyRouter.get('/list', listMedicines)
-pharmacyRouter.post('/order', authUser, createPharmacyOrder)
+pharmacyRouter.post('/order', createPharmacyOrder)
 
 export default pharmacyRouter

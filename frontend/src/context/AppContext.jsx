@@ -1,14 +1,15 @@
 import { createContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import axios from 'axios'
+import io from 'socket.io-client'
 
-import { doctors as defaultDoctors } from "../assets/assets";
+import { doctors as defaultDoctors, getDoctorInstantImage } from "../assets/assets";
 
 export const AppContext = createContext()
 
 const AppContextProvider = (props) => {
     const currencySymbol = '₹'
-    const backendUrl = import.meta.env.VITE_BACKEND_URL
+    const backendUrl = (import.meta.env.VITE_BACKEND_URL || 'http://localhost:8080').replace(/\/$/, '')
 
     const [doctors, setDoctors] = useState(defaultDoctors)
     const [token, setToken] = useState(localStorage.getItem('token') || '')
@@ -18,10 +19,10 @@ const AppContextProvider = (props) => {
         try {
             const { data } = await axios.get(backendUrl + '/api/doctor/list')
             if (data.success && data.doctors && data.doctors.length > 0) {
-                // Merge backend doctors with default fallback images if missing
+                // Ensure instant image resolution
                 const enriched = data.doctors.map((d, i) => ({
                     ...d,
-                    image: d.image || defaultDoctors[i % defaultDoctors.length]?.image
+                    image: getDoctorInstantImage(d, i)
                 }))
                 setDoctors(enriched)
             } else {
@@ -64,7 +65,18 @@ const AppContextProvider = (props) => {
 
     useEffect(() => {
         getDoctorsData()
-    }, [])
+
+        const socketUrl = backendUrl || 'http://localhost:8080'
+        const socket = io(socketUrl)
+
+        socket.on('doctor_list_updated', () => {
+            getDoctorsData()
+        })
+
+        return () => {
+            socket.disconnect()
+        }
+    }, [backendUrl])
 
     useEffect(() => {
         if (token) {

@@ -309,7 +309,14 @@ const MyAppointments = () => {
                   alt={item.docData?.name || 'Doctor'} 
                 />
                 <div className="space-y-1.5 text-xs text-zinc-550 dark:text-zinc-400">
-                  <h3 className="text-zinc-900 dark:text-zinc-50 text-sm font-semibold leading-none">{item.docData?.name}</h3>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <h3 className="text-zinc-900 dark:text-zinc-50 text-sm font-semibold leading-none">{item.docData?.name}</h3>
+                    {item.isEmergency && (
+                      <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-rose-500 text-white shadow-xs animate-pulse">
+                        🚨 Emergency Priority
+                      </span>
+                    )}
+                  </div>
                   <p className="text-primary dark:text-primary font-bold text-[10px] uppercase tracking-wider">{item.docData?.speciality}</p>
                   
                   <div className="flex items-center gap-1">
@@ -323,6 +330,12 @@ const MyAppointments = () => {
                       {slotDateFormat(item.slotDate)} at {item.slotTime}
                     </span>
                   </div>
+
+                  {item.notes && (
+                    <div className="text-[11px] bg-zinc-50 dark:bg-zinc-950 p-2 rounded-lg border border-zinc-200/50 dark:border-zinc-800 text-zinc-600 dark:text-zinc-300">
+                      <span className="font-bold text-zinc-500">Reason / Notes:</span> {item.notes}
+                    </div>
+                  )}
 
                   {/* Render Stepper Timeline Tracker */}
                   {item.timeline && item.timeline.length > 0 && (

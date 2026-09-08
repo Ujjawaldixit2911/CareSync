@@ -1,14 +1,22 @@
 import { createContext, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { doctorImages } from "../assets/assets";
 
 export const DoctorContext = createContext();
 
 const DoctorContextProvider = (props) => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlDToken = urlParams.get('dToken');
+  if (urlDToken) {
+    localStorage.setItem('dToken', urlDToken);
+    window.history.replaceState({}, document.title, window.location.pathname);
+  }
+
   const [dToken, setDToken] = useState(
-    localStorage.getItem("dToken") || ""
+    urlDToken || localStorage.getItem("dToken") || ""
   );
   const [appointments, setAppointments] = useState([]);
   const [dashData, setDashData] = useState(false);
@@ -107,7 +115,10 @@ const DoctorContextProvider = (props) => {
       );
 
       if (data.success) {
-        setProfileData(data.profileData);
+        setProfileData({
+          ...data.profileData,
+          image: doctorImages[data.profileData?.email] || data.profileData.image
+        });
         console.log(data.profileData);
       } else {
         toast.error(data.message);

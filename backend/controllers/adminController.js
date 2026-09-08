@@ -6,7 +6,8 @@ import validator from "validator";
 import { v2 as cloudinary } from "cloudinary";
 import userModel from "../models/userModel.js"
 import { cacheDelete } from '../config/cache.js';
-import { emitToUser, emitToDoctor } from '../config/socket.js';
+import { emitToUser, emitToDoctor, emitBroadcast, emitToAdmin } from '../config/socket.js';
+
 
 // API for admin login
 const loginAdmin = async (req, res) => {
@@ -73,6 +74,10 @@ const addDoctor = async (req, res) => {
     // Invalidate Cache
     await cacheDelete('doctors_list');
 
+    // Broadcast Real-Time Update
+    emitBroadcast('doctor_list_updated', { doctor: newDoctor });
+    emitBroadcast('dashboard_updated', {});
+
     res.status(200).json({ success: true, message: "Doctor Added" });
 
   } catch (error) {
@@ -109,6 +114,9 @@ const appointmentCancel = async (req, res) => {
         // Emit Socket Event
         emitToUser(appointmentData.userId, 'appointment_cancelled', { appointmentId });
         emitToDoctor(docId, 'appointment_cancelled', { appointmentId });
+        emitBroadcast('appointment_list_updated', { appointmentId, status: 'Declined' });
+        emitBroadcast('dashboard_updated', {});
+        emitBroadcast('doctor_list_updated', {});
 
         res.json({ success: true, message: 'Appointment Declined/Cancelled' })
 
@@ -132,6 +140,8 @@ const appointmentApprove = async (req, res) => {
         // Emit Socket Event
         emitToUser(appointmentData.userId, 'appointment_approved', { appointmentId });
         emitToDoctor(appointmentData.docId, 'appointment_approved', { appointmentId });
+        emitBroadcast('appointment_list_updated', { appointmentId, status: 'Approved' });
+        emitBroadcast('dashboard_updated', {});
 
         res.json({ success: true, message: 'Appointment Approved' })
     } catch (error) {
@@ -202,6 +212,10 @@ const removeDoctor = async (req, res) => {
         // Invalidate Cache
         await cacheDelete('doctors_list');
         
+        // Broadcast Real-Time Update
+        emitBroadcast('doctor_list_updated', { docId });
+        emitBroadcast('dashboard_updated', {});
+
         res.json({ success: true, message: "Doctor removed successfully" });
     } catch (error) {
         console.log(error);

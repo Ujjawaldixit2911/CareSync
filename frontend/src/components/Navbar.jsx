@@ -61,7 +61,7 @@ const Navbar = () => {
       </div>
 
       {/* Primary Nav Links (Properly Structured, Single-line, No Wrapping) */}
-      <ul className='hidden lg:flex items-center gap-1 text-xs text-zinc-600 dark:text-zinc-300 font-semibold'>
+      <ul className='hidden xl:flex items-center gap-1 text-xs text-zinc-600 dark:text-zinc-300 font-semibold'>
         <li>
           <NavLink 
             to='/' 
@@ -109,21 +109,6 @@ const Navbar = () => {
 
         <li>
           <NavLink 
-            to='/fitness' 
-            className={({ isActive }) => 
-              `whitespace-nowrap px-3 py-2 rounded-xl transition-all ${
-                isActive 
-                  ? 'text-lime-600 dark:text-lime-400 bg-lime-500/10 dark:bg-zinc-800 font-bold' 
-                  : 'hover:text-zinc-900 dark:hover:text-zinc-50 hover:bg-zinc-100 dark:hover:bg-zinc-800/80'
-              }`
-            }
-          >
-            Fitness
-          </NavLink>
-        </li>
-
-        <li>
-          <NavLink 
             to='/hospital' 
             className={({ isActive }) => 
               `whitespace-nowrap px-3 py-2 rounded-xl transition-all ${
@@ -139,16 +124,46 @@ const Navbar = () => {
 
         <li>
           <NavLink 
+            to='/blood-donation' 
+            className={({ isActive }) => 
+              `whitespace-nowrap px-3 py-2 rounded-xl transition-all ${
+                isActive 
+                  ? 'text-red-600 dark:text-red-400 bg-red-500/10 dark:bg-zinc-800 font-bold' 
+                  : 'hover:text-zinc-900 dark:hover:text-zinc-50 hover:bg-zinc-100 dark:hover:bg-zinc-800/80'
+              }`
+            }
+          >
+            Blood Bank
+          </NavLink>
+        </li>
+
+        <li>
+          <NavLink 
             to='/pharmacy-shop' 
             className={({ isActive }) => 
               `whitespace-nowrap px-3 py-2 rounded-xl transition-all ${
                 isActive 
-                  ? 'text-primary dark:text-white bg-primary/10 dark:bg-zinc-800 font-bold' 
+                  ? 'text-sky-600 dark:text-sky-400 bg-sky-500/10 dark:bg-zinc-800 font-bold' 
                   : 'hover:text-zinc-900 dark:hover:text-zinc-50 hover:bg-zinc-100 dark:hover:bg-zinc-800/80'
               }`
             }
           >
             Pharmacy
+          </NavLink>
+        </li>
+
+        <li>
+          <NavLink 
+            to='/ai-hub' 
+            className={({ isActive }) => 
+              `whitespace-nowrap px-3 py-2 rounded-xl transition-all ${
+                isActive 
+                  ? 'text-purple-600 dark:text-purple-400 bg-purple-500/10 dark:bg-zinc-800 font-bold' 
+                  : 'hover:text-zinc-900 dark:hover:text-zinc-50 hover:bg-zinc-100 dark:hover:bg-zinc-800/80'
+              }`
+            }
+          >
+            AI Hub
           </NavLink>
         </li>
 
@@ -174,10 +189,10 @@ const Navbar = () => {
         {/* Book Appointment CTA Button */}
         <button
           onClick={() => navigate('/doctors')}
-          className='bg-[#0071e3] hover:bg-[#0077ed] text-white text-xs font-bold px-3.5 py-2 rounded-xl transition-all active:scale-95 flex items-center gap-1.5 shadow-sm shadow-blue-500/20 cursor-pointer whitespace-nowrap'
+          className='bg-[#0071e3] hover:bg-[#0077ed] text-white text-xs font-bold px-3 py-2 sm:px-3.5 sm:py-2 rounded-xl transition-all active:scale-95 flex items-center gap-1.5 shadow-sm shadow-blue-500/20 cursor-pointer whitespace-nowrap'
         >
           <Calendar className="w-3.5 h-3.5" />
-          <span>Appointment</span>
+          <span className="hidden xs:inline">Appointment</span>
         </button>
 
         {/* Theme Toggle */}
@@ -238,7 +253,7 @@ const Navbar = () => {
           <div className="flex items-center gap-2">
             <button
               onClick={() => navigate('/login')}
-              className='bg-primary hover:bg-primary-dark text-white text-xs px-5 py-2.5 rounded-xl font-bold shadow-md shadow-primary/20 hover:scale-[1.01] active:scale-[0.98] transition-all hidden sm:block cursor-pointer'
+              className='bg-primary hover:bg-primary-dark text-white text-xs px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl font-bold shadow-md shadow-primary/20 hover:scale-[1.01] active:scale-[0.98] transition-all hidden sm:block cursor-pointer'
             >
               Login / Sign Up
             </button>
@@ -248,7 +263,8 @@ const Navbar = () => {
         {/* Mobile menu trigger */}
         <button 
           onClick={() => setShowMenu(true)} 
-          className='lg:hidden p-2 rounded-xl border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-900 cursor-pointer'
+          className='xl:hidden p-2 rounded-xl border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-900 cursor-pointer'
+          aria-label="Open Navigation Menu"
         >
           <Menu className='w-5 h-5' />
         </button>
@@ -258,13 +274,13 @@ const Navbar = () => {
           <>
             <div 
               onClick={() => setShowMenu(false)} 
-              className='lg:hidden fixed inset-0 z-40 bg-zinc-950/70 backdrop-blur-sm animate-in fade-in duration-200'
+              className='xl:hidden fixed inset-0 z-40 bg-zinc-950/70 backdrop-blur-sm animate-in fade-in duration-200'
             />
-            <div className='lg:hidden fixed right-0 top-0 bottom-0 z-50 w-[80vw] max-w-sm bg-white dark:bg-zinc-950 border-l border-zinc-200 dark:border-zinc-850 shadow-2xl p-6 flex flex-col justify-between animate-in slide-in-from-right duration-250'>
-              <div className="space-y-6">
-                <div className='flex items-center justify-between pb-4 border-b border-zinc-100 dark:border-zinc-900'>
+            <div className='xl:hidden fixed right-0 top-0 bottom-0 z-50 w-[85vw] max-w-sm bg-white dark:bg-zinc-950 border-l border-zinc-200 dark:border-zinc-850 shadow-2xl p-5 flex flex-col justify-between animate-in slide-in-from-right duration-250 overflow-hidden'>
+              <div className="flex flex-col h-full overflow-hidden">
+                <div className='flex items-center justify-between pb-3 border-b border-zinc-100 dark:border-zinc-900 flex-shrink-0'>
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-xl bg-primary text-white flex items-center justify-center font-bold">
+                    <div className="w-8 h-8 rounded-xl bg-red-500/10 border border-red-500/30 text-red-500 flex items-center justify-center font-bold">
                       <HeartPulse className="w-4 h-4" />
                     </div>
                     <div>
@@ -281,7 +297,7 @@ const Navbar = () => {
                 </div>
 
                 {token && userData && (
-                  <div className='flex items-center gap-3 p-3 bg-zinc-50 dark:bg-zinc-900 rounded-2xl'>
+                  <div className='flex items-center gap-3 p-3 my-3 bg-zinc-50 dark:bg-zinc-900 rounded-2xl flex-shrink-0'>
                     <img 
                       className='w-10 h-10 rounded-full border border-zinc-200 dark:border-zinc-800 object-cover' 
                       src={userData.image || '/fallback-user.png'} 
@@ -294,18 +310,28 @@ const Navbar = () => {
                   </div>
                 )}
 
-                <ul className='flex flex-col gap-1.5 text-xs font-semibold'>
+                {/* Scrollable Navigation List */}
+                <ul className='flex-1 overflow-y-auto space-y-1 py-2 pr-1 text-xs font-semibold no-scrollbar'>
                   <NavLink onClick={() => setShowMenu(false)} to='/' className={({isActive}) => `px-4 py-2.5 rounded-xl flex items-center transition-all ${isActive ? 'bg-primary/10 text-primary font-bold' : 'hover:bg-zinc-50 dark:hover:bg-zinc-900 text-zinc-700 dark:text-zinc-300'}`}>
                     Home
+                  </NavLink>
+                  <NavLink onClick={() => setShowMenu(false)} to='/doctors' className={({isActive}) => `px-4 py-2.5 rounded-xl flex items-center transition-all ${isActive ? 'bg-primary/10 text-primary font-bold' : 'hover:bg-zinc-50 dark:hover:bg-zinc-900 text-zinc-700 dark:text-zinc-300'}`}>
+                    Find Doctors
                   </NavLink>
                   <NavLink onClick={() => setShowMenu(false)} to='/dashboard' className={({isActive}) => `px-4 py-2.5 rounded-xl flex items-center transition-all ${isActive ? 'bg-primary/10 text-primary font-bold' : 'hover:bg-zinc-50 dark:hover:bg-zinc-900 text-zinc-700 dark:text-zinc-300'}`}>
                     Dashboard
                   </NavLink>
-                  <NavLink onClick={() => setShowMenu(false)} to='/fitness' className={({isActive}) => `px-4 py-2.5 rounded-xl flex items-center gap-2 transition-all ${isActive ? 'bg-primary/10 text-primary font-bold' : 'hover:bg-zinc-50 dark:hover:bg-zinc-900 text-zinc-700 dark:text-zinc-300'}`}>
-                    <Activity className="w-3.5 h-3.5 text-lime-500" /> Fitness Tracker
-                  </NavLink>
                   <NavLink onClick={() => setShowMenu(false)} to='/hospital' className={({isActive}) => `px-4 py-2.5 rounded-xl flex items-center gap-2 transition-all ${isActive ? 'bg-primary/10 text-primary font-bold' : 'hover:bg-zinc-50 dark:hover:bg-zinc-900 text-zinc-700 dark:text-zinc-300'}`}>
                     <Building2 className="w-3.5 h-3.5 text-teal-500" /> Hospital Management
+                  </NavLink>
+                  <NavLink onClick={() => setShowMenu(false)} to='/blood-donation' className={({isActive}) => `px-4 py-2.5 rounded-xl flex items-center gap-2 transition-all ${isActive ? 'bg-red-500/10 text-red-500 font-bold' : 'hover:bg-zinc-50 dark:hover:bg-zinc-900 text-zinc-700 dark:text-zinc-300'}`}>
+                    <HeartPulse className="w-3.5 h-3.5 text-red-500" /> Blood Bank &amp; Donors
+                  </NavLink>
+                  <NavLink onClick={() => setShowMenu(false)} to='/pharmacy-shop' className={({isActive}) => `px-4 py-2.5 rounded-xl flex items-center gap-2 transition-all ${isActive ? 'bg-sky-500/10 text-sky-500 font-bold' : 'hover:bg-zinc-50 dark:hover:bg-zinc-900 text-zinc-700 dark:text-zinc-300'}`}>
+                    <Activity className="w-3.5 h-3.5 text-sky-500" /> Central Pharmacy Shop
+                  </NavLink>
+                  <NavLink onClick={() => setShowMenu(false)} to='/ai-hub' className={({isActive}) => `px-4 py-2.5 rounded-xl flex items-center gap-2 transition-all ${isActive ? 'bg-purple-500/10 text-purple-500 font-bold' : 'hover:bg-zinc-50 dark:hover:bg-zinc-900 text-zinc-700 dark:text-zinc-300'}`}>
+                    <Sparkles className="w-3.5 h-3.5 text-purple-500" /> AI Diagnostic Hub
                   </NavLink>
                   <NavLink onClick={() => setShowMenu(false)} to='/my-appointments' className={({isActive}) => `px-4 py-2.5 rounded-xl flex items-center gap-2 transition-all ${isActive ? 'bg-primary/10 text-primary font-bold' : 'hover:bg-zinc-50 dark:hover:bg-zinc-900 text-zinc-700 dark:text-zinc-300'}`}>
                     <FolderLock className="w-3.5 h-3.5 text-indigo-500" /> Health Records Vault
@@ -326,33 +352,34 @@ const Navbar = () => {
                     </>
                   )}
                 </ul>
-              </div>
 
-              <div className="space-y-3 pt-6 border-t border-zinc-100 dark:border-zinc-900">
-                {token && userData ? (
-                  <button 
-                    onClick={() => { logout(); setShowMenu(false); }} 
-                    className='w-full py-3 rounded-xl border border-red-200 dark:border-red-950/40 text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer'
-                  >
-                    <LogOut className="w-4 h-4" /> Logout
-                  </button>
-                ) : (
-                  <button 
-                    onClick={() => { navigate('/login'); setShowMenu(false); }} 
-                    className='w-full py-3 rounded-xl bg-primary hover:bg-primary-dark text-white text-xs font-bold flex items-center justify-center transition-all cursor-pointer shadow-md'
-                  >
-                    Login / Sign Up
-                  </button>
-                )}
+                {/* Footer Buttons in Drawer */}
+                <div className="space-y-2 pt-3 border-t border-zinc-100 dark:border-zinc-900 flex-shrink-0">
+                  {token && userData ? (
+                    <button 
+                      onClick={() => { logout(); setShowMenu(false); }} 
+                      className='w-full py-2.5 rounded-xl border border-red-200 dark:border-red-950/40 text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer'
+                    >
+                      <LogOut className="w-4 h-4" /> Logout
+                    </button>
+                  ) : (
+                    <button 
+                      onClick={() => { navigate('/login'); setShowMenu(false); }} 
+                      className='w-full py-2.5 rounded-xl bg-primary hover:bg-primary-dark text-white text-xs font-bold flex items-center justify-center transition-all cursor-pointer shadow-md'
+                    >
+                      Login / Sign Up
+                    </button>
+                  )}
 
-                <a 
-                  href={import.meta.env.VITE_ADMIN_URL || 'http://localhost:5180'} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className='w-full py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 text-xs font-semibold flex items-center justify-center gap-1.5 transition-all'
-                >
-                  <Shield className="w-3.5 h-3.5 text-primary" /> Doctor / Admin Console
-                </a>
+                  <a 
+                    href={import.meta.env.VITE_ADMIN_URL || 'http://localhost:5180'} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className='w-full py-2 rounded-xl border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 text-xs font-semibold flex items-center justify-center gap-1.5 transition-all'
+                  >
+                    <Shield className="w-3.5 h-3.5 text-primary" /> Doctor / Admin Console
+                  </a>
+                </div>
               </div>
             </div>
           </>

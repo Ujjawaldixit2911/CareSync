@@ -34,7 +34,18 @@ const DoctorAppointments = () => {
           <div className='flex flex-wrap justify-between max-sm:gap-5 max-sm:text-base sm:grid grid-cols-[0.5fr_2fr_1fr_1fr_3fr_1fr_1fr] gap-1 items-center text-gray-500 py-3 px-6 border-b hover:bg-gray-50' key={index}>
             <p className='max-sm:hidden'>{index+1}</p>
             <div className='flex items-center gap-2'>
-              <img src={item.userData.image} className='w-8 rounded-full' alt="" /> <p>{item.userData.name}</p>
+              <img src={item.userData?.image || assets.upload_area} className='w-8 h-8 rounded-full object-cover' alt="" /> 
+              <div>
+                <p className='font-semibold text-gray-800 flex items-center gap-1.5'>
+                  {item.userData?.name || 'Patient'}
+                  {item.isEmergency && (
+                    <span className='px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-wider bg-red-600 text-white animate-pulse'>
+                      🚨 EMERGENCY
+                    </span>
+                  )}
+                </p>
+                {item.notes && <p className='text-[10px] text-gray-400 truncate max-w-[150px]'>{item.notes}</p>}
+              </div>
             </div>
             <div>
               <p className='text-xs inline border border-primary px-2 rounded-full'>

@@ -50,10 +50,10 @@ const AppleSplitSection = () => {
 
           <div className="pt-4">
             <button
-              onClick={() => navigate('/fitness')}
+              onClick={() => navigate('/ai-hub')}
               className="inline-flex items-center gap-2 text-base font-bold text-[#0071e3] hover:text-[#0077ed] hover:underline cursor-pointer"
             >
-              <span>Explore Bio-Tracker Continuum</span>
+              <span>Explore AI Clinical Intelligence</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>

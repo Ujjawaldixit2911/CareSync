@@ -12,7 +12,8 @@ import {
   ShieldAlert, 
   FileCheck2,
   CalendarCheck,
-  Stethoscope
+  Stethoscope,
+  Pill
 } from 'lucide-react'
 
 const features = [
@@ -32,19 +33,19 @@ const features = [
     statsHighlight: '500+ Verified Specialists'
   },
   {
-    id: 'fitness',
-    title: 'Fitness & Vitals Tracker',
-    shortTitle: 'Fitness & Bio Tracker',
-    badge: 'Wearables Synced',
-    description: 'Sync daily activity, calorie burn, heart rate variability, and access AI-powered personalized diet and wellness recommendations.',
-    icon: Activity,
-    link: '/fitness',
-    linkText: 'Explore Fitness Hub',
+    id: 'pharmacy',
+    title: 'Digital Pharmacy & Medicines',
+    shortTitle: 'Pharmacy & Drug Store',
+    badge: 'Express Delivery',
+    description: 'Order genuine prescription medications, browse 30+ clinical categories with dosage guides, interactions, and instant checkout.',
+    icon: Pill,
+    link: '/pharmacy-shop',
+    linkText: 'Explore Pharmacy',
     colorTheme: 'emerald',
     iconBg: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20',
     accentBorder: 'hover:border-emerald-500/40 dark:hover:border-emerald-500/40',
     glowColor: 'from-emerald-500/10 to-transparent',
-    statsHighlight: 'Continuous Bio-Monitoring'
+    statsHighlight: '30+ Essential Medicines'
   },
   {
     id: 'hospital',

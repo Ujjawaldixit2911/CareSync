@@ -20,7 +20,10 @@ const appointmentSchema = new mongoose.Schema({
     review: { type: String, default: '' },
     timeline: { type: Array, default: [] },
     prescription: { type: Array, default: [] },
-    notes: { type: String, default: '' }
+    notes: { type: String, default: '' },
+    isEmergency: { type: Boolean, default: false },
+    emergencyFee: { type: Number, default: 0 },
+    urgency: { type: String, default: 'Standard' } // Standard, High, Critical/Emergency
 })
 
 const appointmentModel = mongoose.models.appointment || mongoose.model("appointment", appointmentSchema)

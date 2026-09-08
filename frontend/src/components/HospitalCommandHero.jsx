@@ -203,13 +203,13 @@ const HospitalCommandHero = ({ onOpenAppointment }) => {
             <span>Call the Hospital</span>
           </a>
 
-          {/* 3. Check Visiting Hours */}
+          {/* 3. Blood Bank & Registry */}
           <button
-            onClick={() => setActiveModal('visiting')}
-            className="px-4 py-2 rounded-full bg-[#f5f5f7] dark:bg-[#27272a] hover:bg-[#0071e3] hover:text-white border border-[#e5e5ea] dark:border-[#3f3f46] text-[#1d1d1f] dark:text-zinc-200 text-xs font-semibold transition-all flex items-center gap-2 cursor-pointer shadow-xs"
+            onClick={() => navigate('/blood-donation')}
+            className="px-4 py-2 rounded-full bg-red-50 dark:bg-red-950/40 hover:bg-red-600 hover:text-white text-red-600 dark:text-red-400 border border-red-200 dark:border-red-900/50 text-xs font-semibold transition-all flex items-center gap-2 cursor-pointer shadow-xs"
           >
-            <Clock className="w-3.5 h-3.5 text-[#0071e3]" />
-            <span>Visiting Hours</span>
+            <Heart className="w-3.5 h-3.5 text-red-500 fill-red-500/20" />
+            <span>Blood Bank &amp; Donors</span>
           </button>
 
           {/* 4. Pharmacy & Medicine Orders */}
@@ -221,7 +221,16 @@ const HospitalCommandHero = ({ onOpenAppointment }) => {
             <span>Browse Pharmacy</span>
           </button>
 
-          {/* 5. AI Symptom Checker */}
+          {/* 5. Check Visiting Hours */}
+          <button
+            onClick={() => setActiveModal('visiting')}
+            className="px-4 py-2 rounded-full bg-[#f5f5f7] dark:bg-[#27272a] hover:bg-[#0071e3] hover:text-white border border-[#e5e5ea] dark:border-[#3f3f46] text-[#1d1d1f] dark:text-zinc-200 text-xs font-semibold transition-all flex items-center gap-2 cursor-pointer shadow-xs"
+          >
+            <Clock className="w-3.5 h-3.5 text-[#0071e3]" />
+            <span>Visiting Hours</span>
+          </button>
+
+          {/* 6. AI Symptom Checker */}
           <button
             onClick={() => navigate('/ai-hub')}
             className="px-4 py-2 rounded-full bg-[#f5f5f7] dark:bg-[#27272a] hover:bg-[#0071e3] hover:text-white border border-[#e5e5ea] dark:border-[#3f3f46] text-[#1d1d1f] dark:text-zinc-200 text-xs font-semibold transition-all flex items-center gap-2 cursor-pointer shadow-xs"
@@ -230,7 +239,7 @@ const HospitalCommandHero = ({ onOpenAppointment }) => {
             <span>AI Symptom Checker</span>
           </button>
 
-          {/* 6. Hospital Campus Map & Parking */}
+          {/* 7. Hospital Campus Map & Parking */}
           <button
             onClick={() => setActiveModal('map')}
             className="px-4 py-2 rounded-full bg-[#f5f5f7] dark:bg-[#27272a] hover:bg-[#0071e3] hover:text-white border border-[#e5e5ea] dark:border-[#3f3f46] text-[#1d1d1f] dark:text-zinc-200 text-xs font-semibold transition-all flex items-center gap-2 cursor-pointer shadow-xs"
@@ -239,7 +248,7 @@ const HospitalCommandHero = ({ onOpenAppointment }) => {
             <span>Campus Map &amp; Parking</span>
           </button>
 
-          {/* 7. Emergency Ambulance Dispatch (High-Priority Red Pill) */}
+          {/* 8. Emergency Ambulance Dispatch (High-Priority Red Pill) */}
           <button
             onClick={() => navigate('/emergency-sos')}
             className="px-4 py-2 rounded-full bg-red-50 dark:bg-red-950/40 hover:bg-red-600 hover:text-white text-red-600 dark:text-red-400 border border-red-200 dark:border-red-900/50 text-xs font-semibold transition-all flex items-center gap-2 cursor-pointer shadow-xs"

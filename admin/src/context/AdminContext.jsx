@@ -1,14 +1,22 @@
 import axios from "axios";
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 import { toast } from "react-toastify";
-
+import io from "socket.io-client";
+import { doctorImages, getDoctorInstantImage } from "../assets/assets";
 
 export const AdminContext = createContext()
 
 const AdminContextProvider = (props) => {
 
-    const [aToken, setAToken] = useState(localStorage.getItem('aToken') ? localStorage.getItem('aToken') : '')
-    const backendUrl = import.meta.env.VITE_BACKEND_URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlAToken = urlParams.get('aToken');
+    if (urlAToken) {
+        localStorage.setItem('aToken', urlAToken);
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+
+    const [aToken, setAToken] = useState(urlAToken || localStorage.getItem('aToken') || '')
+    const backendUrl = (import.meta.env.VITE_BACKEND_URL || 'http://localhost:8080').replace(/\/$/, '')
     const [appointments, setAppointments] = useState([])
 
     const [doctors, setDoctors] = useState([])
@@ -21,7 +29,11 @@ const AdminContextProvider = (props) => {
 
             const { data } = await axios.get(backendUrl + '/api/admin/all-doctors', { headers: { aToken } })
             if (data.success) {
-                setDoctors(data.doctors)
+                const enriched = data.doctors.map((d, i) => ({
+                    ...d,
+                    image: getDoctorInstantImage(d, i)
+                }))
+                setDoctors(enriched)
             } else {
                 toast.error(data.message)
             }
@@ -138,6 +150,60 @@ const AdminContextProvider = (props) => {
             console.log(error)
         }
     }
+
+    // Real-Time Socket.io Connection for instant updates
+    useEffect(() => {
+        if (aToken) {
+            getAllDoctors()
+            getAllAppointments()
+            getDashData()
+
+            const socketUrl = backendUrl || 'http://localhost:8080'
+            const socket = io(socketUrl)
+
+            socket.emit('join_admin')
+
+            socket.on('doctor_list_updated', () => {
+                getAllDoctors()
+                getDashData()
+            })
+
+            socket.on('appointment_list_updated', () => {
+                getAllAppointments()
+                getDashData()
+            })
+
+            socket.on('appointment_booked', () => {
+                getAllAppointments()
+                getDashData()
+            })
+
+            socket.on('appointment_cancelled', () => {
+                getAllAppointments()
+                getDashData()
+            })
+
+            socket.on('appointment_approved', () => {
+                getAllAppointments()
+                getDashData()
+            })
+
+            socket.on('appointment_completed', () => {
+                getAllAppointments()
+                getDashData()
+            })
+
+            socket.on('dashboard_updated', () => {
+                getDashData()
+                getAllDoctors()
+                getAllAppointments()
+            })
+
+            return () => {
+                socket.disconnect()
+            }
+        }
+    }, [aToken, backendUrl])
 
     const value = {
         aToken, setAToken,

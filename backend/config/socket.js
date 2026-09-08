@@ -60,3 +60,10 @@ export const emitToAdmin = (event, data) => {
     io.to('admin_room').emit(event, data);
   }
 };
+
+export const emitBroadcast = (event, data) => {
+  if (io) {
+    io.emit(event, data);
+  }
+};
+

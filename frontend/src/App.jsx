@@ -17,7 +17,6 @@ import PharmacyShop from './pages/PharmacyShop'
 import BloodDonation from './pages/BloodDonation'
 import EmergencySOS from './pages/EmergencySOS'
 import ClinicalDashboard from './pages/ClinicalDashboard'
-import FitnessTracker from './pages/FitnessTracker'
 import HospitalAdmin from './pages/HospitalAdmin'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
@@ -83,17 +82,15 @@ const App = () => {
     <div className='w-full min-h-screen bg-[#f5f5f7] text-[#1d1d1f] dark:bg-[#18181b] dark:text-zinc-100 transition-colors duration-300 relative flex flex-col'>
       <ToastContainer theme={theme === 'dark' ? 'dark' : 'light'} />
       
-      <header className='w-full sticky top-0 z-50 bg-[#f5f5f7]/90 dark:bg-[#18181b]/90 backdrop-blur-md border-b border-[#e5e5ea] dark:border-[#27272a] px-4 sm:px-[10%]'>
+      <header className='w-full sticky top-0 z-50 bg-[#f5f5f7]/90 dark:bg-[#18181b]/90 backdrop-blur-md border-b border-[#e5e5ea] dark:border-[#27272a] px-3 sm:px-6 lg:px-[6%] xl:px-[9%]'>
         <Navbar />
       </header>
 
-      <main className='flex-grow px-4 sm:px-[10%] py-6'>
+      <main className='flex-grow px-3 sm:px-6 lg:px-[6%] xl:px-[9%] py-4 sm:py-6'>
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/dashboard' element={<ClinicalDashboard />} />
           <Route path='/clinical-dashboard' element={<ClinicalDashboard />} />
-          <Route path='/fitness' element={<FitnessTracker />} />
-          <Route path='/fitness-tracker' element={<FitnessTracker />} />
           <Route path='/hospital' element={<HospitalAdmin />} />
           <Route path='/hospital-admin' element={<HospitalAdmin />} />
           <Route path='/hospital-management' element={<HospitalAdmin />} />

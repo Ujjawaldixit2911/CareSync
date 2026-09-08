@@ -27,7 +27,7 @@ const AppleMinimalFooter = () => {
             <ul className="space-y-1 text-slate-600 dark:text-slate-400">
               <li><Link to="/doctors" className="hover:text-[#0071e3] dark:hover:text-sky-400 transition-colors">Find a Doctor</Link></li>
               <li><Link to="/dashboard" className="hover:text-[#0071e3] dark:hover:text-sky-400 transition-colors">Clinical Dashboard</Link></li>
-              <li><Link to="/fitness" className="hover:text-[#0071e3] dark:hover:text-sky-400 transition-colors">Fitness &amp; Bio-Tracker</Link></li>
+              <li><Link to="/pharmacy-shop" className="hover:text-[#0071e3] dark:hover:text-sky-400 transition-colors">Pharmacy &amp; Medicines</Link></li>
               <li><Link to="/hospital" className="hover:text-[#0071e3] dark:hover:text-sky-400 transition-colors">Hospital Command Ops</Link></li>
             </ul>
           </div>

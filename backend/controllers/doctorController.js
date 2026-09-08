@@ -4,7 +4,8 @@ import axios from "axios";
 import doctorModel from "../models/doctorModel.js";
 import appointmentModel from "../models/appointmentModel.js";
 import { cacheGet, cacheSet, cacheDelete } from '../config/cache.js';
-import { emitToUser, emitToAdmin } from '../config/socket.js';
+import { emitToUser, emitToAdmin, emitBroadcast } from '../config/socket.js';
+
 
 // Doctor login
 const loginDoctor = async (req, res) => {
@@ -68,6 +69,9 @@ const appointmentCancel = async (req, res) => {
     // Emit Socket Event
     emitToUser(appointment.userId, 'appointment_cancelled', { appointmentId });
     emitToAdmin('appointment_cancelled', { appointmentId });
+    emitBroadcast('appointment_list_updated', { appointmentId, status: 'Declined' });
+    emitBroadcast('dashboard_updated', {});
+    emitBroadcast('doctor_list_updated', {});
 
     res.json({ success: true, message: "Appointment Cancelled" });
   } catch (error) {
@@ -96,6 +100,8 @@ const appointmentComplete = async (req, res) => {
     // Emit Socket Event
     emitToUser(appointment.userId, 'appointment_completed', { appointmentId });
     emitToAdmin('appointment_completed', { appointmentId });
+    emitBroadcast('appointment_list_updated', { appointmentId, status: 'Completed' });
+    emitBroadcast('dashboard_updated', {});
 
     res.json({ success: true, message: "Appointment Completed" });
   } catch (error) {
@@ -108,11 +114,26 @@ const appointmentComplete = async (req, res) => {
 const doctorList = async (req, res) => {
   try {
     const cached = await cacheGet('doctors_list');
-    if (cached) {
+    if (cached && Array.isArray(cached) && cached.length > 0) {
       return res.json({ success: true, doctors: cached });
     }
 
-    const doctors = await doctorModel.find({}).select("-password -email");
+    const rawDoctors = await doctorModel.find({}).select("-password -email");
+    // Ensure all default doctors have available: true and consultation hours
+    const doctors = rawDoctors.map(d => {
+      const docObj = d.toObject ? d.toObject() : { ...d };
+      return {
+        ...docObj,
+        available: docObj.available !== false, // default to true
+        availableFrom: docObj.availableFrom || '09:00 AM',
+        availableTo: docObj.availableTo || '08:00 PM',
+        breakTime: docObj.breakTime || '01:00 PM - 02:00 PM',
+        workingDays: docObj.workingDays && docObj.workingDays.length > 0 ? docObj.workingDays : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+        emergencyAvailable: docObj.emergencyAvailable !== false,
+        emergencyFee: docObj.emergencyFee || 150
+      };
+    });
+
     await cacheSet('doctors_list', doctors, 300); // cache for 5 minutes
 
     res.json({ success: true, doctors });
@@ -143,6 +164,9 @@ const changeAvailability = async (req, res) => {
     // Invalidate doctors list cache
     await cacheDelete('doctors_list');
 
+    // Broadcast Real-time update
+    emitBroadcast('doctor_list_updated', { docId, available: doctor.available });
+
     res.json({ success: true, message: "Availability changed successfully" });
   } catch (error) {
     console.error(error);
@@ -155,6 +179,14 @@ const doctorProfile = async (req, res) => {
   try {
     const docId = req.user.id;
     const profile = await doctorModel.findById(docId).select("-password");
+    if (profile) {
+      if (profile.available === undefined) profile.available = true;
+      if (!profile.availableFrom) profile.availableFrom = '09:00 AM';
+      if (!profile.availableTo) profile.availableTo = '08:00 PM';
+      if (!profile.breakTime) profile.breakTime = '01:00 PM - 02:00 PM';
+      if (profile.emergencyAvailable === undefined) profile.emergencyAvailable = true;
+      if (!profile.emergencyFee) profile.emergencyFee = 150;
+    }
     res.json({ success: true, profileData: profile });
   } catch (error) {
     console.error(error);
@@ -166,19 +198,37 @@ const doctorProfile = async (req, res) => {
 const updateDoctorProfile = async (req, res) => {
   try {
     const docId = req.user.id;
-    const { fees, address, available, about } = req.body;
+    const { 
+      fees, 
+      address, 
+      available, 
+      about,
+      availableFrom,
+      availableTo,
+      breakTime,
+      workingDays,
+      emergencyAvailable,
+      emergencyFee
+    } = req.body;
 
     await doctorModel.findByIdAndUpdate(docId, {
       fees,
       address,
       available,
       about,
+      availableFrom: availableFrom || '09:00 AM',
+      availableTo: availableTo || '08:00 PM',
+      breakTime: breakTime || '01:00 PM - 02:00 PM',
+      workingDays: workingDays || ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+      emergencyAvailable: emergencyAvailable !== false,
+      emergencyFee: Number(emergencyFee) || 150
     });
 
     // Invalidate doctors list cache
     await cacheDelete('doctors_list');
+    emitBroadcast('doctor_list_updated', { docId, available });
 
-    res.json({ success: true, message: "Profile Updated" });
+    res.json({ success: true, message: "Profile & Consultation Timings Updated Successfully" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: error.message });
@@ -301,6 +351,41 @@ const addPrescription = async (req, res) => {
   }
 }
 
+// Change doctor password
+const changeDoctorPassword = async (req, res) => {
+  try {
+    const docId = req.user.id;
+    const { currentPassword, newPassword } = req.body;
+
+    if (!newPassword || newPassword.length < 8) {
+      return res.status(400).json({ success: false, message: "New password must be at least 8 characters" });
+    }
+
+    const doctor = await doctorModel.findById(docId);
+    if (!doctor) {
+      return res.status(404).json({ success: false, message: "Doctor not found" });
+    }
+
+    if (currentPassword) {
+      const isMatch = await bcrypt.compare(currentPassword, doctor.password);
+      if (!isMatch) {
+        return res.status(400).json({ success: false, message: "Current password is incorrect" });
+      }
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    doctor.password = hashedPassword;
+    await doctor.save();
+
+    res.json({ success: true, message: "Password changed successfully! You can now log in with your new password." });
+  } catch (error) {
+    console.error("Change doctor password error:", error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 export {
   loginDoctor,
   appointmentsDoctor,
@@ -310,6 +395,7 @@ export {
   changeAvailability,
   doctorProfile,
   updateDoctorProfile,
+  changeDoctorPassword,
   doctorDashboard,
   doctorAiVisitSummary,
   doctorAiPatientAnalysis,

@@ -83,9 +83,42 @@ const Login = () => {
           />
         </div>
 
-        <button className='bg-primary hover:bg-primary-dark text-white font-medium w-full py-3 rounded-xl text-sm transition-all duration-200 shadow-md hover:shadow-lg active:scale-[0.99] mt-2'>
-          Sign In
+        <button className='bg-primary hover:bg-primary-dark text-white font-medium w-full py-3 rounded-xl text-sm transition-all duration-200 shadow-md hover:shadow-lg active:scale-[0.99] mt-2 cursor-pointer'>
+          Sign In as {state}
         </button>
+
+        {/* 1-Click Demo Fill Badges */}
+        <div className="w-full p-3 bg-zinc-50 border border-zinc-200/80 rounded-xl space-y-2 text-xs">
+          <div className="flex items-center justify-between">
+            <span className="font-bold text-zinc-700 text-[11px]">⚡ Quick Demo Auto-Fill:</span>
+          </div>
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={() => {
+                setState('Admin');
+                setEmail('admin@caresync.com');
+                setPassword('admin123');
+                toast.info('🛡️ Admin credentials filled!');
+              }}
+              className="flex-1 py-1.5 px-2 bg-white hover:bg-zinc-100 border border-zinc-200 rounded-lg font-bold text-[10px] text-zinc-800 transition-all cursor-pointer text-center"
+            >
+              Fill Admin Demo
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setState('Doctor');
+                setEmail('doc1@gmail.com');
+                setPassword('password123');
+                toast.info('🩺 Doctor credentials filled!');
+              }}
+              className="flex-1 py-1.5 px-2 bg-white hover:bg-zinc-100 border border-zinc-200 rounded-lg font-bold text-[10px] text-primary transition-all cursor-pointer text-center"
+            >
+              Fill Doctor Demo
+            </button>
+          </div>
+        </div>
 
         <div className="w-full text-center mt-2 border-t border-zinc-100 pt-4">
           {state === 'Admin' ? (

@@ -10,19 +10,26 @@ export const validateSchema = (schema) => {
         params: req.params,
       });
 
-      // Assign cleaned, parsed values back
-      req.body = validated.body || req.body;
-      req.query = validated.query || req.query;
-      req.params = validated.params || req.params;
+      // Assign cleaned, parsed values back safely
+      if (validated.body) {
+        req.body = validated.body;
+      }
+      if (validated.query && typeof req.query === 'object') {
+        Object.assign(req.query, validated.query);
+      }
+      if (validated.params && typeof req.params === 'object') {
+        Object.assign(req.params, validated.params);
+      }
 
       next();
     } catch (error) {
-      if (error instanceof z.ZodError) {
+      console.error("validateSchema error:", error);
+      if (error instanceof z.ZodError || error?.name === 'ZodError' || error?.errors) {
         return res.status(400).json({
           success: false,
           message: 'Validation failed',
-          errors: error.errors.map((e) => ({
-            path: e.path.join('.').replace(/^(body|query|params)\./, ''),
+          errors: (error.errors || []).map((e) => ({
+            path: e.path ? e.path.join('.').replace(/^(body|query|params)\./, '') : '',
             message: e.message,
           })),
         });
@@ -30,6 +37,7 @@ export const validateSchema = (schema) => {
       return res.status(500).json({
         success: false,
         message: 'Internal Validation Error',
+        details: error.message
       });
     }
   };
@@ -70,8 +78,8 @@ export const bookAppointmentSchema = z.object({
     docId: z.string().min(1, 'Doctor ID is required'),
     slotDate: z.string().min(1, 'Slot date is required'),
     slotTime: z.string().min(1, 'Slot time is required'),
-    userId: z.string(), // Added by authUser middleware, but validated here
-  }),
+    userId: z.string().optional(),
+  }).passthrough(),
 });
 
 export const rescheduleAppointmentSchema = z.object({
@@ -79,8 +87,8 @@ export const rescheduleAppointmentSchema = z.object({
     appointmentId: z.string().min(1, 'Appointment ID is required'),
     newSlotDate: z.string().min(1, 'New Slot Date is required'),
     newSlotTime: z.string().min(1, 'New Slot Time is required'),
-    userId: z.string(),
-  }),
+    userId: z.string().optional(),
+  }).passthrough(),
 });
 
 export const rateDoctorSchema = z.object({
@@ -88,7 +96,7 @@ export const rateDoctorSchema = z.object({
     appointmentId: z.string().min(1, 'Appointment ID is required'),
     rating: z.number().min(1).max(5),
     review: z.string().optional(),
-    userId: z.string(),
-  }),
+    userId: z.string().optional(),
+  }).passthrough(),
 });
 

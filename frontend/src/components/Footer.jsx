@@ -121,7 +121,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link to="/ai-hub" className="hover:text-primary transition-colors">
-                  Fitness & AI Hub
+                  Pharmacy &amp; AI Hub
                 </Link>
               </li>
               <li>

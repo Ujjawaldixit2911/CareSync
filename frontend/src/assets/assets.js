@@ -38,6 +38,75 @@ import Neurologist from './Neurologist.svg'
 import Pediatricians from './Pediatricians.svg'
 
 
+export const doctorImages = {
+    'doc1@gmail.com': doc1,
+    'doc2@gmail.com': doc2,
+    'doc3@gmail.com': doc3,
+    'doc4@gmail.com': doc4,
+    'doc5@gmail.com': doc5,
+    'doc6@gmail.com': doc6,
+    'doc7@gmail.com': doc7,
+    'doc8@gmail.com': doc8,
+    'doc9@gmail.com': doc9,
+    'doc10@gmail.com': doc10,
+    'doc11@gmail.com': doc11,
+    'doc12@gmail.com': doc12,
+    'doc13@gmail.com': doc13,
+    'doc14@gmail.com': doc14,
+    'doc15@gmail.com': doc15,
+    'doctor@caresync.com': doc1,
+}
+
+export const doctorImagesByName = {
+    'Dr. Richard James': doc1,
+    'Dr. Emily Sanders': doc1,
+    'Dr. Emily Larson': doc2,
+    'Dr. Sarah Patel': doc3,
+    'Dr. Christopher Lee': doc4,
+    'Dr. Jennifer Garcia': doc5,
+    'Dr. Andrew Williams': doc6,
+    'Dr. Christopher Davis': doc7,
+    'Dr. Timothy White': doc8,
+    'Dr. Ava Mitchell': doc9,
+    'Dr. Jeffrey King': doc10,
+    'Dr. Zoe Kelly': doc11,
+    'Dr. Patrick Harris': doc12,
+    'Dr. Chloe Evans': doc13,
+    'Dr. Ryan Martinez': doc14,
+    'Dr. Amelia Hill': doc15,
+}
+
+export const doctorImagesByFile = {
+    'doc1.png': doc1,
+    'doc2.png': doc2,
+    'doc3.png': doc3,
+    'doc4.png': doc4,
+    'doc5.png': doc5,
+    'doc6.png': doc6,
+    'doc7.png': doc7,
+    'doc8.png': doc8,
+    'doc9.png': doc9,
+    'doc10.png': doc10,
+    'doc11.png': doc11,
+    'doc12.png': doc12,
+    'doc13.png': doc13,
+    'doc14.png': doc14,
+    'doc15.png': doc15,
+}
+
+export const getDoctorInstantImage = (doctor, index = 0) => {
+    if (!doctor) return doc1;
+    if (doctor.email && doctorImages[doctor.email]) return doctorImages[doctor.email];
+    if (doctor.name && doctorImagesByName[doctor.name]) return doctorImagesByName[doctor.name];
+    if (doctor.image) {
+        const file = doctor.image.split('/').pop()?.split('?')[0];
+        if (file && doctorImagesByFile[file]) return doctorImagesByFile[file];
+        if (doctor.image.startsWith('http') || doctor.image.startsWith('data:')) return doctor.image;
+    }
+    const fallbackList = [doc1, doc2, doc3, doc4, doc5, doc6, doc7, doc8, doc9, doc10, doc11, doc12, doc13, doc14, doc15];
+    return fallbackList[index % fallbackList.length];
+};
+
 export const assets = {
     appointment_img,
     header_img,
@@ -55,7 +124,8 @@ export const assets = {
     dropdown_icon,
     upload_icon,
     stripe_logo,
-    razorpay_logo
+    razorpay_logo,
+    doc1, doc2, doc3, doc4, doc5, doc6, doc7, doc8, doc9, doc10, doc11, doc12, doc13, doc14, doc15
 }
 
 export const specialityData = [

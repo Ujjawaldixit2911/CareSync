@@ -175,6 +175,18 @@ const Dashboard = () => {
         queryClient.invalidateQueries(['adminDashboard'])
       })
 
+      socket.on('appointment_list_updated', () => {
+        queryClient.invalidateQueries(['adminDashboard'])
+      })
+
+      socket.on('doctor_list_updated', () => {
+        queryClient.invalidateQueries(['adminDashboard'])
+      })
+
+      socket.on('dashboard_updated', () => {
+        queryClient.invalidateQueries(['adminDashboard'])
+      })
+
       socket.on('sos_triggered', (data) => {
         toast.error(`🔥 Emergency SOS trigger received from patient ${data.patientName || 'Guest'}!`)
         loadEmergencyData()
@@ -549,18 +561,22 @@ const Dashboard = () => {
   )
 
   return (
-    <div className="p-6 space-y-6 w-full text-left">
+    <div className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 space-y-6 text-left max-w-7xl mx-auto w-full">
       {/* Header Selector Tabs */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-zinc-250/60 dark:border-zinc-800 pb-4 gap-4">
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center border-b border-zinc-200 dark:border-zinc-800 pb-4 gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-zinc-950 dark:text-zinc-50 font-sans">Enterprise Hospital Hub</h1>
-          <p className="text-zinc-505 dark:text-zinc-400 text-xs font-normal">Monitor resource allocations, triage logs, and scheduling funnels.</p>
+          <h1 className="text-xl sm:text-2xl font-black tracking-tight text-zinc-950 dark:text-zinc-50 font-sans">
+            Enterprise Hospital Hub
+          </h1>
+          <p className="text-zinc-500 dark:text-zinc-400 text-xs font-normal mt-0.5">
+            Real-time clinical analytics, patient flow, telemedicine queue, and resource telemetry.
+          </p>
         </div>
         {/* Dash Type Selectors */}
-        <div className="flex flex-wrap gap-1.5 p-1 bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl">
+        <div className="flex items-center gap-1.5 p-1 bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-x-auto max-w-full pb-1 sm:pb-1">
           <button 
             onClick={() => setDashboardTab('analytics')}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold cursor-pointer transition-all ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-bold cursor-pointer transition-all whitespace-nowrap ${
               dashboardTab === 'analytics' 
                 ? 'bg-white dark:bg-zinc-800 shadow-sm text-zinc-950 dark:text-white' 
                 : 'text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200'
@@ -570,7 +586,7 @@ const Dashboard = () => {
           </button>
           <button 
             onClick={() => setDashboardTab('hospital')}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold cursor-pointer transition-all ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-bold cursor-pointer transition-all whitespace-nowrap ${
               dashboardTab === 'hospital' 
                 ? 'bg-white dark:bg-zinc-800 shadow-sm text-zinc-950 dark:text-white' 
                 : 'text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200'
@@ -580,7 +596,7 @@ const Dashboard = () => {
           </button>
           <button 
             onClick={() => setDashboardTab('pharmacy')}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold cursor-pointer transition-all ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-bold cursor-pointer transition-all whitespace-nowrap ${
               dashboardTab === 'pharmacy' 
                 ? 'bg-white dark:bg-zinc-800 shadow-sm text-zinc-950 dark:text-white' 
                 : 'text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200'
@@ -590,17 +606,17 @@ const Dashboard = () => {
           </button>
           <button 
             onClick={() => setDashboardTab('blood')}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold cursor-pointer transition-all ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-bold cursor-pointer transition-all whitespace-nowrap ${
               dashboardTab === 'blood' 
                 ? 'bg-white dark:bg-zinc-800 shadow-sm text-zinc-950 dark:text-white' 
                 : 'text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200'
             }`}
           >
-            Blood Bank Manager
+            Blood Bank
           </button>
           <button 
             onClick={() => setDashboardTab('emergency')}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold cursor-pointer transition-all ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-bold cursor-pointer transition-all whitespace-nowrap ${
               dashboardTab === 'emergency' 
                 ? 'bg-white dark:bg-zinc-800 shadow-sm text-zinc-950 dark:text-white' 
                 : 'text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200'
@@ -610,13 +626,13 @@ const Dashboard = () => {
           </button>
           <button 
             onClick={() => setDashboardTab('enterprise')}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold cursor-pointer transition-all ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-bold cursor-pointer transition-all whitespace-nowrap ${
               dashboardTab === 'enterprise' 
                 ? 'bg-white dark:bg-zinc-800 shadow-sm text-zinc-950 dark:text-white' 
                 : 'text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200'
             }`}
           >
-            Enterprise Console
+            Audit Logs & Security
           </button>
         </div>
       </div>

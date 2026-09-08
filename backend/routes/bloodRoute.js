@@ -1,7 +1,6 @@
 import express from 'express'
-import { registerDonor, createBloodRequest, listDonors, listRequests, updateRequestStatus } from '../controllers/bloodController.js'
+import { registerDonor, createBloodRequest, listDonors, listRequests, updateRequestStatus, getBloodStock } from '../controllers/bloodController.js'
 import authAdmin from '../middlewares/authAdmin.js'
-import authUser from '../middlewares/authUser.js'
 
 const bloodRouter = express.Router()
 
@@ -10,9 +9,10 @@ bloodRouter.post('/update-request-status', authAdmin, updateRequestStatus)
 bloodRouter.get('/admin-requests', authAdmin, listRequests)
 
 // Donor & Patient operations
-bloodRouter.post('/register', authUser, registerDonor)
-bloodRouter.post('/request', authUser, createBloodRequest)
+bloodRouter.post('/register', registerDonor)
+bloodRouter.post('/request', createBloodRequest)
 bloodRouter.get('/list-donors', listDonors)
 bloodRouter.get('/list-requests', listRequests)
+bloodRouter.get('/stock', getBloodStock)
 
 export default bloodRouter

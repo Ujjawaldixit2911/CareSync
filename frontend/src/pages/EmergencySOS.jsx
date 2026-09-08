@@ -132,15 +132,12 @@ const EmergencySOS = () => {
 
     L.control.zoom({ position: 'topright' }).addTo(map)
 
-    // Tile Layer based on theme (Light vs Dark Matter)
-    const isDark = theme === 'dark'
-    const tileUrl = isDark
-      ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
-      : 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
+    // 100% Free OpenStreetMap Tile Layer - No API Key Required
+    const tileUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
 
     const tileLayer = L.tileLayer(tileUrl, {
       maxZoom: 19,
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/">CARTO</a>'
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map)
 
     tileLayerRef.current = tileLayer
@@ -160,18 +157,15 @@ const EmergencySOS = () => {
     }
   }, [])
 
-  // Sync Theme tile layers dynamically
+  // Sync Map view if theme changes
   useEffect(() => {
     if (mapInstanceRef.current && tileLayerRef.current) {
       mapInstanceRef.current.removeLayer(tileLayerRef.current)
-      const isDark = theme === 'dark'
-      const tileUrl = isDark
-        ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
-        : 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
+      const tileUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
 
       const newTileLayer = L.tileLayer(tileUrl, {
         maxZoom: 19,
-        attribution: '&copy; OpenStreetMap'
+        attribution: '&copy; OpenStreetMap contributors'
       }).addTo(mapInstanceRef.current)
 
       tileLayerRef.current = newTileLayer
