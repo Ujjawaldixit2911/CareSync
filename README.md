@@ -2,11 +2,9 @@
 
 **CareSync** is a full-stack web application designed to make healthcare more accessible by simplifying the process of booking doctor appointments and healthcare management. It offers three levels of login: **Patient**, **Doctor**, and **Admin**, each with distinct features tailored to their roles. The app integrates **online payment gateways (Stripe and Razorpay)** to facilitate seamless and secure payments. Built using the **MERN stack** (MongoDB, Express.js, React.js, and Node.js), CareSync provides an efficient, user-friendly experience for both patients and healthcare providers.
 
-## 🚀 Live Deployment Links
+## 🚀 Live Demo
 
-- 🧠 **AI Intelligence Service (Render Live)**: [https://caresync-ai-service-dgz0.onrender.com/docs](https://caresync-ai-service-dgz0.onrender.com/docs)
-- ⚙️ **Backend Web Service (Render)**: [CareSync Backend on Render](https://caresync-ai-service-dgz0.onrender.com)
-- 🌐 **GitHub Repository**: [https://github.com/Ujjawaldixit2911/CareSync](https://github.com/Ujjawaldixit2911/CareSync)
+- 🌐 **Live Website (Frontend)**: [https://caresync-frontend.onrender.com](https://caresync-frontend.onrender.com)
 
 ## 🛠️ Tech Stack
 
